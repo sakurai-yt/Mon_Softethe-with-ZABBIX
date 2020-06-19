@@ -241,6 +241,17 @@ def get_hub_status(hub_name):
     fn_result = do_request(fn_method, fn_params)
     return json.dumps(fn_result)
 
+def get_hub(hub_name):
+    """
+    This is doc string
+    :return:
+    """
+    # get hub
+    fn_params = {"HubName_str": str(hub_name)}
+    fn_method = "GetHub"
+    fn_result = do_request(fn_method, fn_params)
+    return json.dumps(fn_result)
+
 def hub_stats():
     """
     This is doc string
@@ -257,6 +268,18 @@ def hub_stats():
         json_item = {}
         for key, value in item_converted.items():
             json_item[key] = value
+        # additional query for special metrics
+        # we need to get our dictionary by calling GetHub method = get_hub function
+        fn_hub_dict = json.loads(get_hub(hub_name))
+        # convert any bool values to int
+        cur_hub_converted = convert_bool(fn_hub_dict['result'])
+        # iterate key, value
+        for key, value in cur_hub_converted.items():
+            # set new key - value pairs
+            json_item[key] = value
+        # for sequrity
+        json_item["AdminPasswordPlainText_str"] = "It's my secret :)"
+        # add our hub stats to main json
         result_json[hub_name] = json_item
     return json.dumps(result_json)
 
