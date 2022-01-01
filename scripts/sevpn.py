@@ -13,6 +13,9 @@ import subprocess
 import requests
 # urllib3
 import urllib3
+# important module for data consistence
+import copy
+import pdb
 
 # config file
 CURRENT_CONFIG_NAME = "sevpn.ini"
@@ -106,7 +109,7 @@ def bridge_discovery():
         json_item["{#ONLINE}"] = bridge_converted["Online_bool"]
         json_item["{#TAPMODE}"] = bridge_converted["TapMode_bool"]
         zabbix_json["data"].append(json_item)
-    return json.dumps(zabbix_json)
+    return json.dumps(copy.deepcopy(zabbix_json))
 
 
 def bridge_support():
@@ -118,7 +121,7 @@ def bridge_support():
     fn_method = "GetBridgeSupport"
     fn_result = do_request(fn_method, fn_params)
     fn_result['result'] = convert_bool(fn_result['result'])
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def server_info():
     """
@@ -129,7 +132,7 @@ def server_info():
     fn_method = "GetServerInfo"
     fn_result = do_request(fn_method, fn_params)
     fn_result['result'] = convert_bool(fn_result['result'])
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def server_status():
     """
@@ -140,7 +143,7 @@ def server_status():
     fn_method = "GetServerStatus"
     fn_result = do_request(fn_method, fn_params)
     fn_result['result'] = convert_bool(fn_result['result'])
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def listener_discovery():
     """
@@ -157,7 +160,7 @@ def listener_discovery():
         json_item["{#PORT}"] = listener_converted["Ports_u32"]
         json_item["{#ENABLED}"] = listener_converted["Enables_bool"]
         zabbix_json["data"].append(json_item)
-    return json.dumps(zabbix_json)
+    return json.dumps(copy.deepcopy(zabbix_json))
 
 def listener_stats():
     """
@@ -174,7 +177,7 @@ def listener_stats():
         json_item["Errors_bool"] = listener_converted["Errors_bool"]
         json_item["Enables_bool"] = listener_converted["Enables_bool"]
         result_json[str(cur_listener["Ports_u32"])] = json_item
-    return json.dumps(result_json)
+    return json.dumps(copy.deepcopy(result_json))
 
 def bridge_stats():
     """
@@ -194,11 +197,11 @@ def bridge_stats():
         cur_dev_name = item_converted["DeviceName_str"]
         cur_tap_mode = item_converted["TapMode_bool"]
         if cur_hub_name not in result_json.keys():
-            result_json[cur_hub_name] = {cur_dev_name: {str(cur_tap_mode): json_item}}
+            result_json[cur_hub_name] = {cur_dev_name: {str(cur_tap_mode): copy.deepcopy(json_item)}}
         elif cur_dev_name not in result_json[cur_hub_name].keys():
-            result_json[cur_hub_name][cur_dev_name] = {str(cur_tap_mode): json_item}
+            result_json[cur_hub_name][cur_dev_name] = {str(cur_tap_mode): copy.deepcopy(json_item)}
         else:
-            result_json[cur_hub_name][cur_dev_name][str(cur_tap_mode)] = json_item
+            result_json[cur_hub_name][cur_dev_name][str(cur_tap_mode)] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def hub_list():
@@ -210,7 +213,7 @@ def hub_list():
     fn_params = {}
     fn_method = "EnumHub"
     fn_result = do_request(fn_method, fn_params)
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def hub_discovery():
     """
@@ -227,7 +230,7 @@ def hub_discovery():
         json_item["{#ONLINE}"] = item_converted["Online_bool"]
         json_item["{#TYPE}"] = item_converted["HubType_u32"]
         json_item["{#TRAFFICFILLED}"] = item_converted["IsTrafficFilled_bool"]
-        zabbix_json["data"].append(json_item)
+        zabbix_json["data"].append(copy.deepcopy(json_item))
     return json.dumps(zabbix_json)
 
 def get_hub_status(hub_name):
@@ -239,7 +242,7 @@ def get_hub_status(hub_name):
     fn_params = {"HubName_str": str(hub_name)}
     fn_method = "GetHubStatus"
     fn_result = do_request(fn_method, fn_params)
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def get_hub(hub_name):
     """
@@ -250,7 +253,7 @@ def get_hub(hub_name):
     fn_params = {"HubName_str": str(hub_name)}
     fn_method = "GetHub"
     fn_result = do_request(fn_method, fn_params)
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def hub_stats():
     """
@@ -280,7 +283,7 @@ def hub_stats():
         # for sequrity
         json_item["AdminPasswordPlainText_str"] = "It's my secret :)"
         # add our hub stats to main json
-        result_json[hub_name] = json_item
+        result_json[hub_name] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def cascade_list(hub_name):
@@ -292,7 +295,7 @@ def cascade_list(hub_name):
     fn_params = {"HubName_str": str(hub_name)}
     fn_method = "EnumLink"
     fn_result = do_request(fn_method, fn_params)
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def get_cascade_status(hub_name, cascade_name):
     """
@@ -304,7 +307,7 @@ def get_cascade_status(hub_name, cascade_name):
                  "AccountName_utf": cascade_name}
     fn_method = "GetLinkStatus"
     fn_result = do_request(fn_method, fn_params)
-    return json.dumps(fn_result)
+    return json.dumps(copy.deepcopy(fn_result))
 
 def cascade_discovery():
     """
@@ -328,7 +331,7 @@ def cascade_discovery():
             json_item["{#CONNECTED}"] = item_converted["Connected_bool"]
             json_item["{#HOSTNAME}"] = item_converted["Hostname_str"]
             json_item["{#TARGETHUB}"] = item_converted["TargetHubName_str"]
-            zabbix_json["data"].append(json_item)
+            zabbix_json["data"].append(copy.deepcopy(json_item))
     return json.dumps(zabbix_json)
 
 def internal_ping_discovery():
@@ -345,9 +348,9 @@ def internal_ping_discovery():
                 cur_item["{#TARGETHUB}"] = cur_link["{#TARGETHUB}"]
                 cur_item["{#HUBNAME}"] = cur_link["{#HUBNAME}"]
                 cur_item["{#HOSTNAME}"] = cur_link["{#HOSTNAME}"]
-                new_links.append(cur_item)
+                new_links.append(copy.deepcopy(cur_item))
     my_links["data"] = new_links
-    return json.dumps(my_links)
+    return json.dumps(copy.deepcopy(my_links))
 
 def external_ping_discovery():
     """this is docstring"""
@@ -359,9 +362,9 @@ def external_ping_discovery():
             cur_item["{#TARGETHUB}"] = cur_link["{#TARGETHUB}"]
             cur_item["{#HUBNAME}"] = cur_link["{#HUBNAME}"]
             cur_item["{#HOSTNAME}"] = cur_link["{#HOSTNAME}"]
-            new_links.append(cur_item)
+            new_links.append(copy.deepcopy(cur_item))
     my_links["data"] = new_links
-    return json.dumps(my_links)
+    return json.dumps(copy.deepcopy(my_links))
 
 def cascade_stats_detailed():
     """
@@ -384,9 +387,9 @@ def cascade_stats_detailed():
                 for key, value in item_converted.items():
                     json_item[key] = value
                 if cur_hub_name not in result_json.keys():
-                    result_json[cur_hub_name] = {cascade_name: json_item}
+                    result_json[cur_hub_name] = {cascade_name: copy.deepcopy(json_item)}
                 else:
-                    result_json[cur_hub_name][cascade_name] = json_item
+                    result_json[cur_hub_name][cascade_name] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def cascade_stats():
@@ -408,9 +411,9 @@ def cascade_stats():
             for key, value in item_converted.items():
                 json_item[key] = value
             if cur_hub_name not in result_json.keys():
-                result_json[cur_hub_name] = {cascade_name: json_item}
+                result_json[cur_hub_name] = {cascade_name: copy.deepcopy(json_item)}
             else:
-                result_json[cur_hub_name][cascade_name] = json_item
+                result_json[cur_hub_name][cascade_name] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def cascade_stat(p_hub_name, p_cascade_name):
@@ -431,7 +434,7 @@ def cascade_stat(p_hub_name, p_cascade_name):
             if (cur_hub_name == p_hub_name) and (cascade_name == p_cascade_name):
                 for key, value in cur_item.items():
                     json_item[key] = value
-                result_json = json_item
+                result_json = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def get_cascade(hub_name, cascade_name):
@@ -481,7 +484,7 @@ def user_discovery():
             json_item["{#ISTRAFFICFILLED}"] = item_converted["IsTrafficFilled_bool"]
             json_item["{#ISEXPIRESFILLED}"] = item_converted["IsExpiresFilled_bool"]
             json_item["{#EXPIRESDATE}"] = item_converted["Expires_dt"]
-            zabbix_json["data"].append(json_item)
+            zabbix_json["data"].append(copy.deepcopy(json_item))
     return json.dumps(zabbix_json)
 
 def get_user(hub_name, user_name):
@@ -517,9 +520,9 @@ def user_stats_detailed():
                 for key, value in item_converted.items():
                     json_item[key] = value
                 if cur_hub_name not in result_json.keys():
-                    result_json[cur_hub_name] = {user_name: json_item}
+                    result_json[cur_hub_name] = {user_name: copy.deepcopy(json_item)}
                 else:
-                    result_json[cur_hub_name][user_name] = json_item
+                    result_json[cur_hub_name][user_name] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def user_stats():
@@ -541,9 +544,9 @@ def user_stats():
             for key, value in item_converted.items():
                 json_item[key] = value
             if cur_hub_name not in result_json.keys():
-                result_json[cur_hub_name] = {user_name: json_item}
+                result_json[cur_hub_name] = {user_name: copy.deepcopy(json_item)}
             else:
-                result_json[cur_hub_name][user_name] = json_item
+                result_json[cur_hub_name][user_name] = copy.deepcopy(json_item)
     return json.dumps(result_json)
 
 def ping_list(ip_list, ping_count):
