@@ -1,0 +1,3362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2022-06-18T03:33:47Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template App SoftEtherVPN Server</template>
+            <name>Template App SoftEtherVPN Server</name>
+            <description>2022/06/18 Translated from Russian to English.&#13;
+JSON-RPC based monitoring</description>
+            <groups>
+                <group>
+                    <name>Manual Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>JSON.</name>
+                </application>
+                <application>
+                    <name>SoftEther General</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Number of processes vpnserver</name>
+                    <key>proc.num[{$VPN_PROC_NAME}]</key>
+                    <history>1w</history>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <request_method>POST</request_method>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;2</expression>
+                            <name>VPN Server stopped on {HOST.NAME}</name>
+                            <priority>DISASTER</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Bridge stats JSON</name>
+                    <key>sevpn[bridge.stats]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>System Bridge Support by OS</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[bridge.support,os]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['IsBridgeSupportedOs_bool']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[bridge.support]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>WinPCAP needed</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[bridge.support,winpcap]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['IsWinPcapNeeded_bool']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[bridge.support]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Bridge Support JSON</name>
+                    <key>sevpn[bridge.support]</key>
+                    <delay>3600s</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Cascade stats JSON</name>
+                    <key>sevpn[cascade.stats]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Get ping JSON</name>
+                    <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Hub stats JSON</name>
+                    <key>sevpn[hub.stats]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Listener stats JSON</name>
+                    <key>sevpn[listener.stats]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Server Info Sevpn Version</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.info,se.version]</key>
+                    <delay>0</delay>
+                    <history>3d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['ServerVersionString_str']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.info]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Info uptime</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.info,uptime]</key>
+                    <delay>0</delay>
+                    <history>3d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']</params>
+                        </step>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['StartTime_dt']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Server Info JSON</name>
+                    <key>sevpn[server.info]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Server Status: Broadcast bytes RX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,broadcast.bytes.rx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Recv.BroadcastBytes_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Broadcast bytes TX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,broadcast.bytes.tx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Send.BroadcastBytes_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Broadcast packets RX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,broadcast.packets.rx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Recv.BroadcastCount_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Broadcast packets TX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,broadcast.packets.tx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Send.BroadcastCount_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory (free)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.free]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['FreeMemory_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory physical (free)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.phys.free]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['FreePhys_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory physical (total)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.phys.total]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['TotalPhys_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory physical (used)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.phys.used]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['UsedPhys_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory (total)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.total]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['TotalMemory_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Memory (used)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,memory.used]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['UsedMemory_u64']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of groups</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.groups]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumGroups_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: HUB number (dynamic)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.hub.num.dynamic]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumHubDynamic_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: HUB number (standalone)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.hub.num.standalone]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumHubStandalone_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: HUB number (static)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.hub.num.static]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumHubStatic_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: HUB number (total)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.hub.num.tot]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumHubTotal_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of IP tables</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.ip.tables]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumIpTables_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of MAC tables</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.mac.tables]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumMacTables_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of sessions (remote)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.sess.remote]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumSessionsRemote_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of TCP connections (local)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.tcp.conn.loc]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumTcpConnectionsLocal_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of TCP connections (remote)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.tcp.conn.rem]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumTcpConnectionsRemote_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of TCP connections (total)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.tcp.conn.tot]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumTcpConnections_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of sessions (local)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.tcp.sess.local]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumSessionsLocal_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of sessions (total)</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.tcp.sess.total]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumSessionsTotal_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Number of users</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,num.users]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['NumUsers_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: server type</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,server.type]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['ServerType_u32']</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Unicast bytes RX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,unicast.bytes.rx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Recv.UnicastBytes_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Unicast bytes TX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,unicast.bytes.tx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Send.UnicastBytes_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Unicast packets RX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,unicast.packets.rx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Recv.UnicastCount_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>Server Status: Unicast packets TX</name>
+                    <type>DEPENDENT</type>
+                    <key>sevpn[server.status,unicast.packets.tx]</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>90d</trends>
+                    <applications>
+                        <application>
+                            <name>SoftEther General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$['result']['Send.UnicastCount_u64']</params>
+                        </step>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>sevpn[server.status]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: Server Status JSON</name>
+                    <key>sevpn[server.status]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SoftEtherVPN: User stats JSON</name>
+                    <key>sevpn[user.stats]</key>
+                    <delay>30s</delay>
+                    <history>2d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>JSON.</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Bridge discovery</name>
+                    <key>sevpn[bridge.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Bridge HUB[$2] DEV[$3] ISTAP[$4] active</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[bridge.stats,{#HUBNAME},{#IFNAME},{#TAPMODE},is.active]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <description>Hub Name: &quot;{#HUBNAME}&quot;&#13;
+If Name: &quot;{#IFNAME}&quot;&#13;
+Is Active: &quot;{#ACTIVE}&quot;&#13;
+Is Online: &quot;{#ONLINE}&quot;&#13;
+Is Tap Mode: &quot;{#TAPMODE}&quot;</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 2.Bridges</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#IFNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TAPMODE}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Active_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[bridge.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>Bridge: interface {#IFNAME} in the system is inactive</name>
+                                    <priority>HIGH</priority>
+                                    <description>This interface is bridged to a virtual hub {#HUBNAME}&#13;
+If the interface was not scheduled to be deactivated, it means that the traffic is not walking. It is urgent to go into the OS settings and activate the interface.&#13;
+&#13;
+Otherwise, you may need to disassemble the bridge and/or add it to the detection rule exceptions in monitoring.&#13;
+&#13;
+Criteria:&#13;
+ - hub name #HUBNAME - {#HUBNAME}&#13;
+ - device name #IFNAME - {#IFNAME}</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Bridge: The bridge is down because VHUB {#HUBNAME} is no longer online</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[bridge.stats,{#HUBNAME},{#IFNAME},{#TAPMODE},is.online].last()}=0</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Bridge HUB[$2] DEV[$3] ISTAP[$4] online</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[bridge.stats,{#HUBNAME},{#IFNAME},{#TAPMODE},is.online]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <description>Hub Name: &quot;{#HUBNAME}&quot;&#13;
+If Name: &quot;{#IFNAME}&quot;&#13;
+Is Active: &quot;{#ACTIVE}&quot;&#13;
+Is Online: &quot;{#ONLINE}&quot;&#13;
+Is Tap Mode: &quot;{#TAPMODE}&quot;</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 2.Bridges</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#IFNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TAPMODE}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Online_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[bridge.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>Bridge: The bridge is down because VHUB {#HUBNAME} is no longer online</name>
+                                    <priority>HIGH</priority>
+                                    <description>If this is an unintended action, you should go to server settings and enable virtual hub {#HUBNAME}&#13;
+&#13;
+Otherwise, you may need to disable this trigger and/or add this bridge to exceptions in auto-discovery.&#13;
+&#13;
+Criteria:&#13;
+hub name #HUBNAME - {#HUBNAME}&#13;
+device name #IFNAME - {#IFNAME}</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Cascade discovery</name>
+                    <key>sevpn[cascade.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Cascade: {#HUBNAME}: {#CASCADENAME} connected</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},connected]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:{#HUBNAME} 3.Cascade:[{#CASCADENAME}] Common</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#CASCADENAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Connected_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[cascade.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Cascade: {#HUBNAME}: {#CASCADENAME} last error</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},last.error]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:{#HUBNAME} 3.Cascade:[{#CASCADENAME}] Common</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#CASCADENAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['LastError_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[cascade.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Cascade: {#HUBNAME}: {#CASCADENAME} online</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},online]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:{#HUBNAME} 3.Cascade:[{#CASCADENAME}] Common</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#CASCADENAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Online_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[cascade.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>({Template App SoftEtherVPN Server:sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},connected].last()}=0&#13;
+and&#13;
+{Template App SoftEtherVPN Server:sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},online].last()}=1)&#13;
+or&#13;
+{Template App SoftEtherVPN Server:sevpn[cascade.stats,{#HUBNAME},{#CASCADENAME},last.error].last()}&lt;&gt;0</expression>
+                            <name>Cascade {#HUBNAME} {#CASCADENAME} is not connected</name>
+                            <priority>HIGH</priority>
+                            <description>Cascade is not connected.&#13;
+Hub: {#HUBNAME}&#13;
+Cascade name: {#CASCADENAME}&#13;
+Target hub: {#TARGETHUB}&#13;
+&#13;
+Connected: {ITEM.LASTVALUE1} ( 1 - on, 0 - off )&#13;
+Online (activated): {ITEM.LASTVALUE2} ( 1 - online, 0 - offline/disconnected/deactivated )&#13;
+Error code: {ITEM.LASTVALUE3} ( 0 - ok, 9 - login problem, ... )</description>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Ping discovery - external</name>
+                    <key>sevpn[external.ping.discovery]</key>
+                    <delay>5m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Ping {#HOSTNAME} avg</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},avg]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <description>The host that is pinged: {#HOSTNAME}&#13;
+Source Hub: {#HUBNAME}&#13;
+Destination Hub: {#TARGETHUB}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['external']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HOSTNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['avg']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_EXT_PING_HIGH:&quot;{#HOSTNAME}&quot;}</expression>
+                                    <name>Ping to {#HOSTNAME} is high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_EXT_PING_HIGH:&quot;{#HOSTNAME}&quot;} ms&#13;
+The connection between hubs {#HUBNAME} ({HOSTNAME}) and {#TARGETHUB} ({#HOSTNAME}) is supposed to be bad</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>The ping to {#HOSTNAME} is very high</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},avg].last()}&gt;{$SEVPN_EXT_PING_VERY_HIGH:&quot;{#HOSTNAME}&quot;}</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_EXT_PING_TOO_HIGH:&quot;{#HOSTNAME}&quot;}</expression>
+                                    <name>Ping to {#HOSTNAME} is too high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_EXT_PING_TOO_HIGH:&quot;{#HOSTNAME}&quot;} ms&#13;
+The connection between hubs {#HUBNAME} ({HOSTNAME}) and {#TARGETHUB} ({#HOSTNAME}) is supposed to be bad</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Destination node {#HOSTNAME} is unavailable</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},loss].last()}=100</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_EXT_PING_VERY_HIGH:&quot;{#HOSTNAME}&quot;}</expression>
+                                    <name>The ping to {#HOSTNAME} is very high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_EXT_PING_VERY_HIGH:&quot;{#HOSTNAME}&quot;} ms&#13;
+The connection between hubs {#HUBNAME} ({HOSTNAME}) and {#TARGETHUB} ({#HOSTNAME}) is supposed to be bad</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Ping to {#HOSTNAME} is too high</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},avg].last()}&gt;{$SEVPN_EXT_PING_TOO_HIGH:&quot;{#HOSTNAME}&quot;}</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#HOSTNAME} loss</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},loss]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <description>The host that is pinged: {#HOSTNAME}&#13;
+Source Hub: {#HUBNAME}&#13;
+Destination Hub: {#TARGETHUB}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['external']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HOSTNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['loss']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=100</expression>
+                                    <name>Destination node {#HOSTNAME} is unavailable</name>
+                                    <priority>WARNING</priority>
+                                    <description>This server connects to {#HOSTNAME} to establish a connection between hubs {#HUBNAME} (this host) and {#TARGETHUB} (remote host).</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#HOSTNAME} max</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},max]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <description>The host that is pinged: {#HOSTNAME}&#13;
+Source Hub: {#HUBNAME}&#13;
+Destination Hub: {#TARGETHUB}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['external']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HOSTNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['max']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                            <request_method>POST</request_method>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#HOSTNAME} min</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},min]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <description>The host that is pinged: {#HOSTNAME}&#13;
+Source Hub: {#HUBNAME}&#13;
+Destination Hub: {#TARGETHUB}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['external']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HOSTNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['min']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Ping to {#HOSTNAME}.   {#HUBNAME} &lt;-&gt; {#TARGETHUB}</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>FFFF00</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},avg]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>DASHED_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},max]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <drawtype>DOTTED_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},min]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>4</sortorder>
+                                    <drawtype>BOLD_LINE</drawtype>
+                                    <color>FF0000</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#HOSTNAME},{#HUBNAME},{#TARGETHUB},loss]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Hub discovery</name>
+                    <key>sevpn[hub.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} ACL's count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},acl.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumAccessLists_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                            <request_method>POST</request_method>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} broadcast bytes RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},broadcast.bytes.rx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Recv.BroadcastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} broadcast bytes TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},broadcast.bytes.tx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Send.BroadcastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} broadcast packets RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},broadcast.packets.rx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Recv.BroadcastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} broadcast packets TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},broadcast.packets.tx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Send.BroadcastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} groups count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},groups.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumGroups_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} IP tables count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},ip.tables.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumIpTables_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} number of new logins</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},logins.count.diff]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumLogin_u32']</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} MAC tables count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},mac.tables.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumMacTables_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} SecureNAT enabled</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},securenat.enabled]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['SecureNATEnabled_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} sessions count (bridge)</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},sessions.count.bridge]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumSessionsBridge_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} sessions count (client)</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},sessions.count.client]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumSessionsClient_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} sessions count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},sessions.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumSessions_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} status</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},status]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Online_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>HUB: {#HUBNAME} switched to OFFLINE state</name>
+                                    <priority>AVERAGE</priority>
+                                    <description>Data from the last autodetection:&#13;
+HUB: {#HUBNAME}&#13;
+Status: {#ONLINE} ( 0 - was offline, 1 - was online)&#13;
+Current status: {ITEM.LASTVALUE1} ( 0 - offline, 1 - online )&#13;
+&#13;
+If there were any cascades going out of the hub, everything is off and there is no traffic.&#13;
+If other servers (cascades) and users connected to the hub - everything is now disabled (triggers for dropped cascades should be lit).&#13;
+If the hub was included in a bridge with an interface, then it is now offline (there should be a corresponding trigger).&#13;
+&#13;
+If the disconnection of the hub is the result of planned actions, then you need to deactivate the triggers and/or include the virtual hub in the exception filter in the monitoring settings.</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} type</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},type]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['HubType_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} unicast bytes RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},unicast.bytes.rx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Recv.UnicastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} unicast bytes TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},unicast.bytes.tx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Send.UnicastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} unicast packets RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},unicast.packets.rx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Recv.UnicastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} unicast packets TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},unicast.packets.tx]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Send.UnicastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} users count</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},users.count]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NumUsers_u32']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>HUB: {#HUBNAME} visibility</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[hub.stats,{#HUBNAME},visibility]</key>
+                            <delay>0</delay>
+                            <history>1w</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 1.General metrics</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['NoEnum_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[hub.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>HUB: {#HUBNAME} visible for anonymous connections</name>
+                                    <priority>INFO</priority>
+                                    <description>Data from the last autodetection:&#13;
+HUB: {#HUBNAME}&#13;
+Status: {#ONLINE} ( 0 - was offline, 1 - was online)&#13;
+Current status: {ITEM.LASTVALUE1} ( 0 - visible, 1 - invisible )&#13;
+&#13;
+This trigger indicates a potential security threat.&#13;
+Any anonymous user connecting to this server can see the current one in the list of available hubs. This will simplify the procedure of hacking by brute force.&#13;
+&#13;
+It is required to assess the degree of danger of this factor.&#13;
+If a potential threat is confirmed, you should check &quot;No Enymerate to Anonymous Users&quot; in the properties of the virtual hub.&#13;
+If the potential threat is not terrible this trigger can be disabled.</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} broadcast bytes</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},broadcast.bytes.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},broadcast.bytes.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} broadcast packets</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},broadcast.packets.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},broadcast.packets.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} general stats</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>2774A4</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},acl.count]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>F7941D</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},groups.count]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <color>FC6EA3</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},ip.tables.count]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>4</sortorder>
+                                    <color>6C59DC</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},mac.tables.count]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>5</sortorder>
+                                    <color>C7A72D</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},users.count]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} logins, NAT</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},logins.count.diff]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>4000FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},securenat.enabled]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} sessions</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>BOLD_LINE</drawtype>
+                                    <color>FF0000</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},sessions.count]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>FFFF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},sessions.count.bridge]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>2774A4</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},sessions.count.client]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} unicast bytes</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},unicast.bytes.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},unicast.bytes.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>HUB: {#HUBNAME} unicast packets</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},unicast.packets.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[hub.stats,{#HUBNAME},unicast.packets.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Ping discovery - internal</name>
+                    <key>sevpn[internal.ping.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Ping {#TARGET_HOST} {#TARGETHUB} avg</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},avg]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 3.Cascade:[{#ACCOUNT_NAME}:{#TARGET_HOST}] Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['internal']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TARGET_HOST}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['avg']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                            <request_method>POST</request_method>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_INT_PING_HIGH:&quot;{#TARGET_HOST}&quot;}</expression>
+                                    <name>Ping to {#HOSTNAME} ({#TARGETHUB}) high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_INT_PING_HIGH:&quot;{#TARGET_HOST}&quot;} ms&#13;
+&#13;
+Between hub {#HUBNAME} on this server and hub {#TARGETHUB} on server {#HOSTNAME} high ping value within the cascade: {ITEM.LASTVALUE1} ms</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>The ping to {#HOSTNAME} ({#TARGETHUB}) is very high</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},avg].last()}&gt;{$SEVPN_INT_PING_VERY_HIGH:&quot;{#TARGET_HOST}&quot;}</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_INT_PING_TOO_HIGH:&quot;{#TARGET_HOST}&quot;}</expression>
+                                    <name>The ping to {#HOSTNAME} ({#TARGETHUB}) is too high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_INT_PING_TOO_HIGH:&quot;{#TARGET_HOST}&quot;} ms&#13;
+&#13;
+Between hub {#HUBNAME} on this server and hub {#TARGETHUB} on server {#HOSTNAME} high ping value within the cascade: {ITEM.LASTVALUE1} ms</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Destination node {#HOSTNAME} is not available within the {#ACCOUNT_NAME} cascade</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},loss].last()}=100</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last()}&gt;{$SEVPN_INT_PING_VERY_HIGH:&quot;{#TARGET_HOST}&quot;}</expression>
+                                    <name>The ping to {#HOSTNAME} ({#TARGETHUB}) is very high</name>
+                                    <priority>INFO</priority>
+                                    <description>Ping threshold value: {$SEVPN_INT_PING_VERY_HIGH:&quot;{#TARGET_HOST}&quot;} ms&#13;
+&#13;
+Between hub {#HUBNAME} on this server and hub {#TARGETHUB} on server {#HOSTNAME} high ping value within the cascade: {ITEM.LASTVALUE1} ms</description>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>The ping to {#HOSTNAME} ({#TARGETHUB}) is too high</name>
+                                            <expression>{Template App SoftEtherVPN Server:sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},avg].last()}&gt;{$SEVPN_INT_PING_TOO_HIGH:&quot;{#TARGET_HOST}&quot;}</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#TARGET_HOST} {#TARGETHUB} loss</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},loss]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 3.Cascade:[{#ACCOUNT_NAME}:{#TARGET_HOST}] Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['internal']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TARGET_HOST}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['loss']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=100</expression>
+                                    <name>Destination node {#HOSTNAME} is not available within the {#ACCOUNT_NAME} cascade</name>
+                                    <priority>WARNING</priority>
+                                    <description>Where the cascade leads.&#13;
+The external connection node: {#HOSTNAME}&#13;
+The cascade is in the hub: {#HUBNAME}&#13;
+The cascade is connected to the hub: {#TARGETHUB}&#13;
+Destination address: {#TARGET_HOST}&#13;
+Cascade name: {#ACCOUNT_NAME}:{#TARGET_HOST}</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#TARGET_HOST} {#TARGETHUB} max</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},max]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 3.Cascade:[{#ACCOUNT_NAME}:{#TARGET_HOST}] Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['internal']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TARGET_HOST}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['max']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Ping {#TARGET_HOST} {#TARGETHUB} min</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},min]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 3.Cascade:[{#ACCOUNT_NAME}:{#TARGET_HOST}] Pings &amp; loss</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['internal']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#TARGET_HOST}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['min']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[get.ping,{$SEVPN_PING_COUNT}]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Ping to {#TARGET_HOST}.   {#HUBNAME} &lt;-&gt; {#TARGETHUB} cascade: {#ACCOUNT_NAME}</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>FFFF00</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},avg]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>BOLD_LINE</drawtype>
+                                    <color>FF0000</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},loss]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <drawtype>DASHED_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},max]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>4</sortorder>
+                                    <drawtype>DOTTED_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[get.ping,{$SEVPN_PING_COUNT},{#ACCOUNT_NAME},{#TARGET_HOST},{#TARGETHUB},{#HUBNAME},min]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>LIstener discovery</name>
+                    <key>sevpn[listener.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Server Listener {#PORT} is enabled</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[listener.stats,{#PORT},is.enabled]</key>
+                            <delay>0</delay>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Listeners</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#PORT}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Enables_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[listener.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&lt;&gt;1</expression>
+                                    <name>Listener: Port {#PORT} deactivated</name>
+                                    <priority>WARNING</priority>
+                                    <description>Port {#PORT} is set to Stopped/Deactivated/Stop.&#13;
+&#13;
+If this port was used to connect external clients (cascades), they are now experiencing connection problems.</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Server Listener {#PORT} error state</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[listener.stats,{#PORT},is.error]</key>
+                            <delay>0</delay>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. Listeners</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#PORT}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Errors_bool']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[listener.stats]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&lt;&gt;0</expression>
+                                    <name>Listener: errors on port {#PORT}</name>
+                                    <priority>HIGH</priority>
+                                    <description>There are errors on port {#PORT}.&#13;
+It is possible that the port has been taken by someone else. If this port was used to connect external clients (cascades), they are now experiencing connection problems.</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>User discovery</name>
+                    <key>sevpn[user.discovery]</key>
+                    <delay>10m</delay>
+                    <lifetime>1d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast bytes RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.bytes.rx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Recv.BroadcastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                            <request_method>POST</request_method>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast bytes TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.bytes.tx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Send.BroadcastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast packets RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.packets.rx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Recv.BroadcastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast packets TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.packets.tx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Send.BroadcastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} last login</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},last.login]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['LastLoginTime_dt']</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast bytes RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.bytes.rx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Recv.UnicastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast bytes TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.bytes.tx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Send.UnicastBytes_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast packets RX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.packets.rx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Recv.UnicastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast packets TX</name>
+                            <type>DEPENDENT</type>
+                            <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.packets.tx]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>bps</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Sevpn. HUB:[{#HUBNAME}] 4.Users. [{#USERNAME}]</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#HUBNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['{#USERNAME}']</params>
+                                </step>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$['Ex.Send.UnicastCount_u64']</params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>8</params>
+                                </step>
+                                <step>
+                                    <type>CHANGE_PER_SECOND</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>sevpn[user.stats]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast packets</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.packets.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.packets.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} broadcast traffic</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.bytes.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},broadcast.bytes.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast packets</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.packets.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.packets.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>User: {#USERNAME}@{#HUBNAME} unicast traffic</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.bytes.rx]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0040FF</color>
+                                    <item>
+                                        <host>Template App SoftEtherVPN Server</host>
+                                        <key>sevpn[user.stats,{#HUBNAME},{#USERNAME},unicast.bytes.tx]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$SEVPN_EXT_LOSS_HIGH}</macro>
+                    <value>10</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_EXT_LOSS_TOO_HIGH}</macro>
+                    <value>40</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_EXT_LOSS_VERY_HIGH}</macro>
+                    <value>20</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_EXT_PING_HIGH}</macro>
+                    <value>150</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_EXT_PING_TOO_HIGH}</macro>
+                    <value>1500</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_EXT_PING_VERY_HIGH}</macro>
+                    <value>500</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_LOSS_HIGH}</macro>
+                    <value>10</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_LOSS_TOO_HIGH}</macro>
+                    <value>40</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_LOSS_VERY_HIGH}</macro>
+                    <value>20</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_PING_HIGH}</macro>
+                    <value>150</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_PING_TOO_HIGH}</macro>
+                    <value>1500</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_INT_PING_VERY_HIGH}</macro>
+                    <value>500</value>
+                </macro>
+                <macro>
+                    <macro>{$SEVPN_PING_COUNT}</macro>
+                    <value>10</value>
+                </macro>
+                <macro>
+                    <macro>{$VERSION}</macro>
+                    <value>Version 4.18 Build 9570   (English)</value>
+                </macro>
+                <macro>
+                    <macro>{$VPN_PROC_NAME}</macro>
+                    <value>vpnserver</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <name>Sevpn Server: groups, IPs, MACs</name>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.groups]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.ip.tables]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>2774A4</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.mac.tables]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: HUB common</name>
+            <ymax_type_1>ITEM</ymax_type_1>
+            <ymax_item_1>
+                <host>Template App SoftEtherVPN Server</host>
+                <key>sevpn[server.status,num.hub.num.tot]</key>
+            </ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>FFBF00</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.hub.num.dynamic]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>0040FF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.hub.num.standalone]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>00FF00</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.hub.num.static]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>FF0000</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.hub.num.tot]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: memory</name>
+            <ymin_type_1>ITEM</ymin_type_1>
+            <ymin_item_1>
+                <host>Template App SoftEtherVPN Server</host>
+                <key>sevpn[server.status,memory.total]</key>
+            </ymin_item_1>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.free]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.total]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>FFFF00</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.used]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: memory physical</name>
+            <ymin_type_1>ITEM</ymin_type_1>
+            <ymin_item_1>
+                <host>Template App SoftEtherVPN Server</host>
+                <key>sevpn[server.status,memory.phys.total]</key>
+            </ymin_item_1>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.phys.free]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.phys.total]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>FFFF00</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,memory.phys.used]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: network broadcast (Bps)</name>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,broadcast.bytes.rx]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>0040FF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,broadcast.bytes.tx]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: network broadcast (pps)</name>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,broadcast.packets.rx]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>0040FF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,broadcast.packets.tx]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: network unicast (Bps)</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,unicast.bytes.rx]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>0040FF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,unicast.bytes.tx]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: network unicast (pps)</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,unicast.packets.rx]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>0040FF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,unicast.packets.tx]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: sessions</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>388E3C</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.tcp.sess.local]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>FFFF00</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.sess.remote]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>FF0000</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.tcp.sess.total]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: TCP connections</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.tcp.conn.loc]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.tcp.conn.rem]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>2774A4</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.tcp.conn.tot]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Sevpn Server: users</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>00BFFF</color>
+                    <item>
+                        <host>Template App SoftEtherVPN Server</host>
+                        <key>sevpn[server.status,num.users]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
